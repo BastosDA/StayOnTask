@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 
 export default function Pomodoro() {
-  const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutes
+  const [timeLeft, setTimeLeft] = useState(25 * 60);
   const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const totalDuration = 25 * 60;
 
   useEffect(() => {
     if (isRunning && timeLeft > 0) {
@@ -33,7 +35,7 @@ export default function Pomodoro() {
 
   const resetTimer = () => {
     setIsRunning(false);
-    setTimeLeft(25 * 60);
+    setTimeLeft(totalDuration);
   };
 
   const formatTime = (seconds: number) => {
@@ -42,10 +44,46 @@ export default function Pomodoro() {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const getProgress = () => {
+    return ((totalDuration - timeLeft) / totalDuration) * 100;
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
       <h1 className="text-4xl font-bold mb-6">Pomodoro Timer</h1>
-      <div className="text-6xl font-mono mb-6">{formatTime(timeLeft)}</div>
+
+      <div className="relative w-64 h-64 mb-6">
+        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+          <circle
+            cx="50"
+            cy="50"
+            r="45"
+            stroke="currentColor"
+            strokeWidth="4"
+            fill="none"
+            className="text-gray-300"
+          />
+          <circle
+            cx="50"
+            cy="50"
+            r="45"
+            stroke="currentColor"
+            strokeWidth="4"
+            fill="none"
+            strokeDasharray={2 * Math.PI * 45}
+            strokeDashoffset={2 * Math.PI * 45 * (1 - getProgress() / 100)}
+            className="text-red-500 transition-all duration-1000"
+            strokeLinecap="round"
+          />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span className="text-5xl font-mono font-bold text-gray-800">
+            {formatTime(timeLeft)}
+          </span>
+          <span className="text-lg text-gray-600 mt-2">Travail</span>
+        </div>
+      </div>
+
       <div className="flex gap-4">
         <button
           onClick={isRunning ? pauseTimer : startTimer}
