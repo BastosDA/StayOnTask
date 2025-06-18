@@ -4,9 +4,16 @@ type TimerMode = 'work' | 'shortBreak' | 'longBreak';
 
 export default function Pomodoro() {
   const [mode, setMode] = useState<TimerMode>('work');
-  const [workDuration, setWorkDuration] = useState(25);
-  const [shortBreakDuration, setShortBreakDuration] = useState(5);
-  const [longBreakDuration, setLongBreakDuration] = useState(15);
+
+  // Charger les réglages depuis localStorage
+  const getInitialSetting = (key: string, defaultValue: number) => {
+    const stored = localStorage.getItem(key);
+    return stored ? parseInt(stored) : defaultValue;
+  };
+
+  const [workDuration, setWorkDuration] = useState(() => getInitialSetting('workDuration', 25));
+  const [shortBreakDuration, setShortBreakDuration] = useState(() => getInitialSetting('shortBreakDuration', 5));
+  const [longBreakDuration, setLongBreakDuration] = useState(() => getInitialSetting('longBreakDuration', 15));
 
   const getDuration = () => {
     switch (mode) {
@@ -22,6 +29,19 @@ export default function Pomodoro() {
   const [timeLeft, setTimeLeft] = useState(getDuration());
   const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Sauvegarde des réglages à chaque changement
+  useEffect(() => {
+    localStorage.setItem('workDuration', workDuration.toString());
+  }, [workDuration]);
+
+  useEffect(() => {
+    localStorage.setItem('shortBreakDuration', shortBreakDuration.toString());
+  }, [shortBreakDuration]);
+
+  useEffect(() => {
+    localStorage.setItem('longBreakDuration', longBreakDuration.toString());
+  }, [longBreakDuration]);
 
   useEffect(() => {
     if (!isRunning) {
@@ -118,7 +138,7 @@ export default function Pomodoro() {
         </button>
       </div>
 
-      {/* Durée modifiable */}
+      {/* Réglages Durée */}
       <div className="flex flex-col gap-4 w-full max-w-md">
         <label className="flex justify-between">
           Durée travail (min) :
