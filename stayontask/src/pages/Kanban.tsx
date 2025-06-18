@@ -1,5 +1,5 @@
-import TodoList from '../Components/Kanban';
+import KanbanBoard from '../Components/Kanban';
 
-export default function Todo() {
-  return <Kanban />;
+export default function Kanban() {
+  return <KanbanBoard />;
 }
