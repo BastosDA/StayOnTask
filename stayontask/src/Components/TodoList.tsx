@@ -1,43 +1,26 @@
 import { useState } from 'react';
 import { PlusIcon, TrashIcon, CalendarIcon, TagIcon } from '@heroicons/react/24/solid';
-
-type Priority = 'low' | 'medium' | 'high';
-type Status = 'todo' | 'in-progress' | 'done';
-
-interface Todo {
-  id: number;
-  title: string;
-  description: string;
-  priority: Priority;
-  status: Status;
-  category: string;
-  dueDate: string;
-  createdAt: string;
-}
+import { useTodos } from '../hooks/useTodos';
+import type { Priority, Status } from '../hooks/useTodos';
 
 export default function TodoList() {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const { todos, addTodo, updateStatus, deleteTodo } = useTodos();
   const [newTodo, setNewTodo] = useState('');
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState<Priority>('medium');
   const [category, setCategory] = useState('work');
   const [dueDate, setDueDate] = useState('');
 
-  const addTodo = () => {
+  const handleAddTodo = () => {
     if (newTodo.trim()) {
-      setTodos([
-        ...todos,
-        {
-          id: Date.now(),
-          title: newTodo,
-          description,
-          priority,
-          status: 'todo',
-          category,
-          dueDate,
-          createdAt: new Date().toISOString()
-        }
-      ]);
+      addTodo({
+        title: newTodo,
+        description,
+        priority,
+        status: 'todo',
+        category,
+        dueDate
+      });
       setNewTodo('');
       setDescription('');
       setPriority('medium');
@@ -45,20 +28,10 @@ export default function TodoList() {
     }
   };
 
-  const updateStatus = (id: number, status: Status) => {
-    setTodos(todos.map(todo => 
-      todo.id === id ? { ...todo, status } : todo
-    ));
-  };
-
-  const deleteTodo = (id: number) => {
-    setTodos(todos.filter(todo => todo.id !== id));
-  };
-
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      addTodo();
+      handleAddTodo();
     }
   };
 
@@ -125,7 +98,7 @@ export default function TodoList() {
                 className="bg-transparent border-2 border-gray-100 rounded-xl px-4 py-2.5 focus:outline-none focus:border-purple-500 transition-colors"
               />
               <button
-                onClick={addTodo}
+                onClick={handleAddTodo}
                 className="bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl px-6 py-2.5 flex items-center justify-center gap-2 hover:opacity-90 transition-opacity font-medium"
               >
                 <PlusIcon className="w-5 h-5" />
@@ -204,8 +177,8 @@ export default function TodoList() {
           ))}
           {todos.length === 0 && (
             <div className="text-center py-16">
-              <h3 className="text-2xl font-semibold text-gray-800 mb-2">Pas encore de tâches</h3>
-              <p className="text-gray-600">Ajouter une tâche pour commencer</p>
+              <h3 className="text-2xl font-semibold text-gray-800 mb-2">Pas encore de tâches</h3>
+              <p className="text-gray-600">Ajouter une tâche pour commencer</p>
             </div>
           )}
         </div>
