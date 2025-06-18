@@ -5,7 +5,6 @@ type TimerMode = 'work' | 'shortBreak' | 'longBreak';
 export default function Pomodoro() {
   const [mode, setMode] = useState<TimerMode>('work');
 
-  // Charger les réglages depuis localStorage
   const getInitialSetting = (key: string, defaultValue: number) => {
     const stored = localStorage.getItem(key);
     return stored ? parseInt(stored) : defaultValue;
@@ -17,36 +16,24 @@ export default function Pomodoro() {
 
   const getDuration = () => {
     switch (mode) {
-      case 'work':
-        return workDuration * 60;
-      case 'shortBreak':
-        return shortBreakDuration * 60;
-      case 'longBreak':
-        return longBreakDuration * 60;
+      case 'work': return workDuration * 60;
+      case 'shortBreak': return shortBreakDuration * 60;
+      case 'longBreak': return longBreakDuration * 60;
     }
   };
 
   const [timeLeft, setTimeLeft] = useState(getDuration());
   const [isRunning, setIsRunning] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const audioRef = useRef<AudioContext | null>(null);
 
-  // Sauvegarde des réglages à chaque changement
-  useEffect(() => {
-    localStorage.setItem('workDuration', workDuration.toString());
-  }, [workDuration]);
-
-  useEffect(() => {
-    localStorage.setItem('shortBreakDuration', shortBreakDuration.toString());
-  }, [shortBreakDuration]);
+  useEffect(() => localStorage.setItem('workDuration', workDuration.toString()), [workDuration]);
+  useEffect(() => localStorage.setItem('shortBreakDuration', shortBreakDuration.toString()), [shortBreakDuration]);
+  useEffect(() => localStorage.setItem('longBreakDuration', longBreakDuration.toString()), [longBreakDuration]);
 
   useEffect(() => {
-    localStorage.setItem('longBreakDuration', longBreakDuration.toString());
-  }, [longBreakDuration]);
-
-  useEffect(() => {
-    if (!isRunning) {
-      setTimeLeft(getDuration());
-    }
+    if (!isRunning) setTimeLeft(getDuration());
   }, [mode, workDuration, shortBreakDuration, longBreakDuration]);
 
   useEffect(() => {
@@ -55,6 +42,7 @@ export default function Pomodoro() {
         setTimeLeft(prev => {
           if (prev <= 1) {
             clearInterval(intervalRef.current!);
+            triggerEndOfSession();
             return 0;
           }
           return prev - 1;
@@ -67,14 +55,42 @@ export default function Pomodoro() {
     return () => clearInterval(intervalRef.current!);
   }, [isRunning, timeLeft]);
 
-  const startTimer = () => {
-    setIsRunning(true);
-  };
-
-  const pauseTimer = () => {
+  const triggerEndOfSession = () => {
     setIsRunning(false);
+    playSound();
+    setShowNotification(true);
+    setTimeout(() => setShowNotification(false), 3000);
   };
 
+  const playSound = () => {
+    try {
+      if (!audioRef.current) {
+        audioRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+      const ctx = audioRef.current;
+      const oscillator = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      oscillator.connect(gain);
+      gain.connect(ctx.destination);
+
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(800, ctx.currentTime);
+      oscillator.frequency.setValueAtTime(600, ctx.currentTime + 0.1);
+      oscillator.frequency.setValueAtTime(800, ctx.currentTime + 0.2);
+
+      gain.gain.setValueAtTime(0.3, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+
+      oscillator.start(ctx.currentTime);
+      oscillator.stop(ctx.currentTime + 0.5);
+    } catch (e) {
+      console.warn("Audio non supporté", e);
+    }
+  };
+
+  const startTimer = () => setIsRunning(true);
+  const pauseTimer = () => setIsRunning(false);
   const resetTimer = () => {
     setIsRunning(false);
     setTimeLeft(getDuration());
@@ -86,22 +102,24 @@ export default function Pomodoro() {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const getProgress = () => {
-    return ((getDuration() - timeLeft) / getDuration()) * 100;
-  };
+  const getProgress = () => ((getDuration() - timeLeft) / getDuration()) * 100;
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-8 space-y-8">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-8 space-y-8 relative">
+      {showNotification && (
+        <div className="absolute top-4 right-4 bg-green-100 text-green-900 px-4 py-2 rounded shadow animate-bounce">
+          ⏰ {mode === 'work' ? 'Session de travail terminée !' : 'Fin de la pause !'}
+        </div>
+      )}
+
       <h1 className="text-4xl font-bold">Pomodoro Timer</h1>
 
-      {/* Mode Switch */}
       <div className="flex gap-2">
         <button onClick={() => setMode('work')} className={`px-4 py-2 rounded ${mode === 'work' ? 'bg-red-500 text-white' : 'bg-gray-200'}`}>Travail</button>
         <button onClick={() => setMode('shortBreak')} className={`px-4 py-2 rounded ${mode === 'shortBreak' ? 'bg-green-500 text-white' : 'bg-gray-200'}`}>Pause Courte</button>
         <button onClick={() => setMode('longBreak')} className={`px-4 py-2 rounded ${mode === 'longBreak' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}>Pause Longue</button>
       </div>
 
-      {/* Timer Circle */}
       <div className="relative w-64 h-64">
         <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
           <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="4" fill="none" className="text-gray-300" />
@@ -128,7 +146,6 @@ export default function Pomodoro() {
         </div>
       </div>
 
-      {/* Controls */}
       <div className="flex gap-4">
         <button onClick={isRunning ? pauseTimer : startTimer} className="px-6 py-2 bg-blue-500 text-white rounded">
           {isRunning ? 'Pause' : 'Start'}
@@ -138,7 +155,6 @@ export default function Pomodoro() {
         </button>
       </div>
 
-      {/* Réglages Durée */}
       <div className="flex flex-col gap-4 w-full max-w-md">
         <label className="flex justify-between">
           Durée travail (min) :
