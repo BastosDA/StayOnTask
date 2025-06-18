@@ -5,6 +5,7 @@
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.1",
     "@heroicons/react": "^2.0.18",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
@@ -20,13 +21,9 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.7",
-    "@types/react": "^19.1.8",
+    "@types/react": "^18.1.8",
     "@types/react-dom": "^18.2.7",
-    "@types/react-router-dom": "^5.3.3",
-    "@types/testing-library__jest-dom": "^5.9.11",
-    "@types/testing-library__user-event": "^14.2.2",
-    "@types/dnd-kit__core": "^6.0.2",
-    "@types/dnd-kit__sortable": "^10.0.0",
+    "@types/testing-library__jest-dom": "^5.14.9",
     "@vitejs/plugin-react": "^4.0.3",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
