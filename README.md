@@ -39,9 +39,6 @@
 
 Cette application a été développée avec les dernières technologies web (React 18, TypeScript, TailwindCSS) pour garantir performance, maintenabilité et évolutivité. L'interface utilisateur privilégie la simplicité d'usage tout en conservant des fonctionnalités avancées.
 
-### 👨‍💻 **Créateur**
-Développée dans le cadre d'un projet de formation en développement web moderne, cette application illustre l'intégration de plusieurs concepts avancés : hooks React personnalisés, drag & drop, gestion d'état local, et design responsive.
-
 ---
 
 ## 🚀 **DÉMONSTRATION**
@@ -161,52 +158,5 @@ Le projet utilise TailwindCSS pour un styling flexible. Vous pouvez facilement p
 - Les durées d'animation
 - Les composants visuels
 - Les gradients et effets
-
----
-
-## **CONTRIBUTION**
-
-### 🤝 **Participez au projet !**
-
-Vos retours et contributions sont les bienvenus ! Voici comment vous pouvez participer :
-
-- **⭐ Donnez une étoile** si ce projet vous plaît
-- **🐛 Signalez des bugs** en ouvrant une issue
-- **💡 Proposez des améliorations** via les discussions
-- **🔧 Contribuez au code** en forkant le projet
-
-### **Comment contribuer :**
-1. Forkez le projet
-2. Créez une branche (`git checkout -b feature/nouvelle-fonctionnalite`)
-3. Committez vos changements (`git commit -m 'Ajout nouvelle fonctionnalité'`)
-4. Poussez vers la branche (`git push origin feature/nouvelle-fonctionnalite`)
-5. Ouvrez une Pull Request
-
----
-
-## 💭 **FEEDBACK ET SUPPORT**
-
-Avez-vous des questions, suggestions ou rencontrez-vous des problèmes ?
-
-- **📝 Ouvrez une issue** pour signaler un bug
-- **💬 Démarrez une discussion** pour partager vos idées
-- **📧 Contactez-nous** pour tout autre question
-
-Votre feedback nous aide à améliorer StayOnTask et à le rendre plus utile pour tous !
-
----
-
-## **LICENCE**
-
-Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
-
----
-
-## **AUTEUR**
-
-Développé avec passion pour optimiser la productivité personnelle et professionnelle.
-
-**Version:** 0.1.0  
-**Statut:** En développement actif
 
 ---
