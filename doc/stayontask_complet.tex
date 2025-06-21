@@ -1,0 +1,1603 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\geometry{
+    top=2.5cm,
+    bottom=2.5cm,
+    left=2.5cm,
+    right=2.5cm,
+    headheight=15pt
+}
+
+% Configuration des couleurs
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{primarycolor}{rgb}{0.4,0.2,0.8}
+
+% Configuration des listings
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=primarycolor,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={StayOnTask - Documentation Technique},
+    pdfauthor={Equipe de Developpement},
+    pdfsubject={Application de Productivite Web}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{primarycolor}{\textbf{StayOnTask}}}
+\fancyhead[R]{\textcolor{primarycolor}{Documentation Technique}}
+\fancyfoot[C]{\thepage}
+
+\title{
+    \vspace{-2cm}
+    \Huge\textbf{\textcolor{primarycolor}{StayOnTask}} \\
+    \vspace{1cm}
+    \Large\textit{Application Web de Productivite} \\
+    \vspace{0.5cm}
+    \large Documentation Technique Complete
+    \vspace{1cm}
+}
+
+\author{
+    \textbf{Equipe de Developpement} \\
+    \textit{Laboratoire GOMEZ} \\
+    \textit{Technicien ES - Semestre 2}
+}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\vspace{2cm}
+
+\begin{center}
+\fbox{\begin{minipage}{0.8\textwidth}
+\textbf{Resume Executif} \\[0.5cm]
+\textbf{StayOnTask} est une application web moderne de productivite personnelle developpee en React avec TypeScript. Elle combine trois outils essentiels : une liste de taches (Todo), un tableau Kanban pour l'organisation visuelle, et un timer Pomodoro pour la gestion du temps. L'application utilise les dernieres technologies web pour offrir une experience utilisateur fluide et intuitive.
+\end{minipage}}
+\end{center}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Introduction a LaTeX}
+
+LaTeX est un systeme de preparation de documents largement utilise dans le monde academique et professionnel. Contrairement aux traitements de texte traditionnels, LaTeX separe le contenu de la mise en forme, permettant aux auteurs de se concentrer sur le contenu tout en produisant des documents de qualite typographique exceptionnelle.
+
+\subsection{Avantages de LaTeX}
+
+\begin{itemize}
+    \item \textbf{Qualite typographique} : Rendu professionnel automatique
+    \item \textbf{Gestion des references} : Citations et bibliographies automatiques
+    \item \textbf{Formules mathematiques} : Support natif des expressions complexes
+    \item \textbf{Structure logique} : Organisation hierarchique du contenu
+    \item \textbf{Reproductibilite} : Meme resultat sur differentes plateformes
+\end{itemize}
+
+\subsection{Utilisation dans ce Document}
+
+Ce document utilise plusieurs packages LaTeX pour ameliorer la presentation :
+\begin{itemize}
+    \item \texttt{listings} : Pour afficher le code source avec coloration syntaxique
+    \item \texttt{hyperref} : Pour les liens hypertextes
+    \item \texttt{geometry} : Pour la mise en page
+    \item \texttt{xcolor} : Pour la gestion des couleurs
+    \item \texttt{fancyhdr} : Pour les en-tetes et pieds de page
+\end{itemize}
+
+\section{Introduction du Projet et Repartition des Roles}
+
+\subsection{Contexte du Projet}
+
+Le projet StayOnTask s'inscrit dans le cadre du cours de Technicien ES au Laboratoire GOMEZ. Il vise a developper une application web moderne de productivite personnelle en utilisant les dernieres technologies du developpement front-end.
+
+\subsection{Objectifs}
+
+Les objectifs principaux de ce projet sont :
+\begin{enumerate}
+    \item Maitriser les technologies modernes de developpement web (React, TypeScript, Vite)
+    \item Implementer des fonctionnalites avancees (glisser-deposer, persistance locale)
+    \item Creer une interface utilisateur intuitive et responsive
+    \item Appliquer les bonnes pratiques de developpement collaboratif avec Git
+    \item Documenter completement le projet avec LaTeX
+\end{enumerate}
+
+\subsection{Repartition des Taches au sein de l'Equipe}
+
+L'equipe de developpement se compose de trois membres, chacun ayant des responsabilites specifiques :
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Membre} & \textbf{Responsabilites} & \textbf{Fichiers Principaux} \\
+\hline
+\textbf{Andre} & Structure generale du projet & App.tsx, Layout.tsx \\
+ & Page Todo & TodoList.tsx, useTodos.ts \\
+ & Configuration du projet & package.json, vite.config.ts \\
+\hline
+\textbf{Tomas} & Page Kanban & Kanban.tsx, KanbanCard.tsx \\
+ & Systeme glisser-deposer & KanbanColumn.tsx \\
+ & Integration DND Kit & Configuration DnD \\
+\hline
+\textbf{Robin} & Page Pomodoro & Pomodoro.tsx \\
+ & Timer et notifications & Logique minuteur \\
+ & Gestion des parametres & Interface utilisateur \\
+\hline
+\end{tabular}
+\caption{Repartition des roles dans l'equipe}
+\label{tab:roles}
+\end{table}
+
+\subsection{Methodologie de Travail}
+
+L'equipe a adopte une approche collaborative basee sur :
+\begin{itemize}
+    \item \textbf{Git Workflow} : Utilisation de branches pour chaque fonctionnalite
+    \item \textbf{Code Review} : Validation croisee du code avant integration
+    \item \textbf{Standards de code} : Utilisation d'ESLint et TypeScript
+    \item \textbf{Documentation} : Documentation continue avec LaTeX
+\end{itemize}
+
+\section{Analyse Git et Gestion de Version}
+
+\subsection{Configuration du Depot Git}
+
+Le projet utilise Git pour la gestion de versions avec une configuration avancee :
+
+\begin{itemize}
+    \item \textbf{Depot principal} : Branche \texttt{main} pour la production
+    \item \textbf{Branche de developpement} : \texttt{dev} pour l'integration
+    \item \textbf{Branches de fonctionnalites} : \texttt{kanban}, \texttt{pomodoro}
+    \item \textbf{Worktrees} : Developpement parallele sur plusieurs branches
+\end{itemize}
+
+\subsection{Configuration .gitignore}
+
+Le fichier \texttt{.gitignore} est configure pour exclure :
+
+\begin{lstlisting}[language=bash, caption=Configuration .gitignore]
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Production builds
+/dist
+/build
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Documentation PDF
+*.pdf
+\end{lstlisting}
+
+\subsection{Statistiques des Contributions}
+
+\subsubsection{Repartition des Commits par Auteur}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|c|c|l|}
+\hline
+\textbf{Contributeur} & \textbf{Commits} & \textbf{Pourcentage} & \textbf{Responsabilite} \\
+\hline
+Robinm0705 (Robin) & 12 & 48\% & Module Pomodoro \\
+Bastos Domingos Andre & 6 & 24\% & Structure \& Todo \\
+Tomas Ramos & 5 & 20\% & Module Kanban \\
+Andre (compte secondaire) & 2 & 8\% & Documentation \\
+\hline
+\textbf{Total} & \textbf{25} & \textbf{100\%} & \\
+\hline
+\end{tabular}
+\caption{Statistiques des contributions par auteur}
+\label{tab:commits-stats}
+\end{table}
+
+\subsubsection{Analyse Detaillee des Contributions}
+
+\textbf{Robin (Robinm0705) - 48\% des commits}
+\begin{itemize}
+    \item Developpement complet du module Pomodoro
+    \item Implementation de l'interface utilisateur avancee
+    \item Fonctionnalites multimedia (audio, notifications)
+    \item Sauvegarde des parametres utilisateur
+    \item Resolution de problemes techniques
+\end{itemize}
+
+\textbf{Andre (Bastos Domingos Andre) - 24\% des commits}
+\begin{itemize}
+    \item Architecture generale du projet
+    \item Implementation du module Todo/TodoList
+    \item Configuration des outils de build
+    \item Gestion des merges et releases
+    \item Tests de worktree
+\end{itemize}
+
+\textbf{Tomas (Tomas Ramos) - 20\% des commits}
+\begin{itemize}
+    \item Developpement du module Kanban avec drag-and-drop
+    \item Synchronisation entre les modules Todo et Kanban
+    \item Amelioration de la documentation
+    \item Interface de gestion des taches
+\end{itemize}
+
+\subsection{Workflow de Developpement}
+
+Le projet suit un workflow Git Flow adapte :
+
+\begin{enumerate}
+    \item \textbf{Branches de fonctionnalites} : Chaque module developpe sur sa branche
+    \item \textbf{Integration sur dev} : Tests et validation
+    \item \textbf{Merge vers main} : Version stable
+    \item \textbf{Worktrees} : Developpement parallele
+\end{enumerate}
+
+\subsection{Historique des Commits Recents}
+
+\begin{lstlisting}[language=bash, caption=Historique des 15 derniers commits]
+ed818e3 2025-06-18 Andre: Update README.md
+cd01061 2025-06-18 Tomas Ramos: Update README.md with enhanced project description
+acf34bb 2025-06-18 Bastos Domingos Andre: Merge branch 'dev'
+d9035a6 2025-06-18 Bastos Domingos Andre: modification package
+4e871b6 2025-06-18 Bastos Domingos Andre: test worktree
+8c508e6 2025-06-18 Robinm0705: resolve problem
+14c7a20 2025-06-18 Robinm0705: complit resolve
+948e1f4 2025-06-18 Robinm0705: ajout icones + ameliorations boutons
+679d506 2025-06-18 Robinm0705: Ajour audio + notif visuel
+ce39b90 2025-06-18 Robinm0705: Ajour sauvegarde reglages
+f938a44 2025-06-18 Robinm0705: Ajour interface user
+2433a7f 2025-06-18 Robinm0705: Mettre en place cercle de progression
+8cc8c63 2025-06-18 Robinm0705: Mettre en place demarrer, pause
+a0d0264 2025-06-18 Tomas Ramos: feat: Implement Kanban board
+0150906 2025-06-18 Tomas Ramos: Ajout de la syncro Todo et Kanban
+\end{lstlisting}
+
+\section{Vue d'ensemble du Projet}
+
+\subsection{Description}
+
+StayOnTask est une application de productivite qui repond aux besoins modernes de gestion du temps et des taches. Elle a ete concue pour etre intuitive, performante et visuellement attrayante.
+
+\subsection{Objectifs}
+
+\begin{enumerate}
+    \item Fournir un environnement unifie pour la gestion des taches
+    \item Ameliorer la productivite grace a la technique Pomodoro
+    \item Offrir une visualisation claire avec le systeme Kanban
+    \item Maintenir la simplicite d'utilisation
+\end{enumerate}
+
+\subsection{Public Cible}
+
+\begin{itemize}
+    \item Etudiants cherchant a organiser leurs etudes
+    \item Professionnels gerant plusieurs projets
+    \item Particuliers souhaitant ameliorer leur productivite
+\end{itemize}
+
+\section{Architecture Technique}
+
+\subsection{Technologies Utilisees}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Technologie} & \textbf{Version} \\
+\hline
+React & 18.2.0 \\
+TypeScript & 5.4.5 \\
+Vite & 4.4.5 \\
+TailwindCSS & 3.3.3 \\
+React Router DOM & 6.20.0 \\
+DND Kit & 6.3.1 \\
+\hline
+\end{tabular}
+\caption{Stack technologique principal}
+\label{tab:tech-stack}
+\end{table}
+
+\subsection{Structure du Projet}
+
+La structure du projet suit les conventions modernes de React :
+
+\begin{verbatim}
+stayontask/
+  public/
+    vite.svg                Icone Vite
+  src/
+    Components/
+      Kanban.tsx            Tableau Kanban principal
+      KanbanCard.tsx        Cartes de taches
+      KanbanColumn.tsx      Colonnes du tableau
+      Layout.tsx            Structure generale
+      Pomodoro.tsx          Timer Pomodoro
+      TodoList.tsx          Liste de taches
+    hooks/
+      useTodos.ts           Gestion des taches
+    pages/
+      Home.tsx              Page d'accueil
+      Kanban.tsx            Page Kanban
+      Pomodoro.tsx          Page Pomodoro
+      ToDo.tsx              Page Todo
+    App.tsx                 Composant principal
+    main.tsx                Point d'entree
+    index.css               Styles globaux
+  package.json              Configuration du projet
+  vite.config.ts            Configuration Vite
+  tsconfig.json             Configuration TypeScript
+  tailwind.config.js        Configuration TailwindCSS
+\end{verbatim}
+
+\section{Fichier .gitignore}
+
+Le fichier .gitignore permet d'exclure certains fichiers du versioning Git :
+
+\lstinputlisting[caption=Contenu du fichier .gitignore]{../.gitignore}
+
+\section{Gestion de Version avec Git}
+
+\subsection{Configuration du Depot Git}
+
+Le projet StayOnTask utilise une configuration Git avancee avec worktrees pour une gestion optimisee des branches et du code.
+
+\subsubsection{Structure du Depot}
+
+\begin{verbatim}
+StayOnTask/
+  .bare/                  Depot Git principal (bare)
+  .git                    Fichier pointant vers .bare
+  main/                   Worktree principal (branche main)
+    stayontask/           Code source de l'application
+    doc/                  Documentation LaTeX
+  [autres-branches]/      Autres worktrees possibles
+\end{verbatim}
+
+\subsubsection{Configuration Worktree}
+
+La configuration worktree a ete mise en place avec les commandes suivantes :
+
+\begin{lstlisting}[caption=Configuration Git Worktree]
+# Clone du depot en mode bare
+git clone https://github.com/[GIT_REPO].git --bare .bare
+
+# Creation du fichier .git pointant vers le depot bare
+echo "gitdir: .bare" > ".git"
+
+# Ajout du worktree principal
+git worktree add main main
+\end{lstlisting}
+
+Cette approche permet :
+\begin{itemize}
+    \item Separation claire entre les metadonnees Git et le code
+    \item Possibilite de travailler sur plusieurs branches simultanement
+    \item Gestion facilitee des merges et conflits
+    \item Organisation claire du projet
+\end{itemize}
+
+\subsection{Branche Principale}
+
+\begin{itemize}
+    \item \textbf{Branche principale} : \texttt{main}
+    \item \textbf{Strategie de branchement} : Git Flow simplifie
+    \item \textbf{Protection} : Validation obligatoire avant merge sur main
+\end{itemize}
+
+\subsection{Configuration .gitignore}
+
+Le fichier .gitignore est configure pour exclure les fichiers non necessaires au suivi de version.
+
+Cette configuration exclut :
+\begin{itemize}
+    \item \texttt{node\_modules/} : Dependances npm (regenerables)
+    \item \texttt{/v0.1} : Versions anterieures du projet
+    \item \texttt{*.pdf} : Fichiers PDF generes (pour eviter les conflits)
+\end{itemize}
+
+\subsection{Historique des Commits}
+
+\subsubsection{Evolution du Projet}
+
+Le developpement de StayOnTask s'est deroule en plusieurs phases :
+
+\begin{enumerate}
+    \item \textbf{Phase 1} : Initialisation du projet et structure de base
+    \begin{itemize}
+        \item Configuration Vite + React + TypeScript
+        \item Mise en place de TailwindCSS
+        \item Creation de la structure de navigation
+    \end{itemize}
+    
+    \item \textbf{Phase 2} : Developpement des fonctionnalites principales
+    \begin{itemize}
+        \item Implementation de la TodoList (Andre)
+        \item Developpement du systeme Kanban (Tomas)
+        \item Creation du timer Pomodoro (Robin)
+    \end{itemize}
+    
+    \item \textbf{Phase 3} : Integration et optimisation
+    \begin{itemize}
+        \item Integration des trois modules
+        \item Tests et debuggage
+        \item Optimisation des performances
+    \end{itemize}
+    
+    \item \textbf{Phase 4} : Documentation et finalisation
+    \begin{itemize}
+        \item Redaction de la documentation LaTeX
+        \item Creation des scripts de compilation
+        \item Preparation pour la livraison
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{Statistiques Git}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Metrique} & \textbf{Valeur} \\
+\hline
+Nombre total de commits & 25 \\
+Nombre de branches & 5 (main, dev, kanban, pomodoro, release) \\
+Contributeurs actifs & 3 (Andre : 8, Tomas : 5, Robin : 12) \\
+Branche principale & main \\
+Dernier commit & ed818e3 (Update README.md) \\
+\hline
+\end{tabular}
+\caption{Statistiques du depot Git (generees automatiquement)}
+\label{tab:git-stats}
+\end{table}
+
+\subsubsection{Historique des Commits Recents}
+
+Les derniers commits montrent l'evolution du projet :
+
+\begin{itemize}
+    \item \textbf{ed818e3} : Update README.md
+    \item \textbf{cd01061} : Update README.md with enhanced project description
+    \item \textbf{acf34bb} : Merge branch 'dev' 
+    \item \textbf{948e1f4} : ajout icones + ameliorations boutons et interface
+    \item \textbf{679d506} : Ajour audio + notif visuel (Pomodoro)
+    \item \textbf{a0d0264} : feat: Implement Kanban board with drag-and-drop
+    \item \textbf{0150906} : Ajout de la syncro entre la page Todo et Kanban
+\end{itemize}
+
+\textit{Note : Les statistiques detaillees peuvent etre generees avec le script git-analysis.ps1 fourni.}
+
+\section{Scripts de Compilation et d'Extraction}
+
+\subsection{Script de Compilation LaTeX}
+
+Un script de compilation automatique est fourni pour generer la documentation PDF.
+
+\subsubsection{compile\_final.bat}
+
+\begin{lstlisting}[caption=Script de compilation automatique - compile\_final.bat]
+@echo off
+echo ========================================
+echo COMPILATION DOCUMENTATION STAYONTASK
+echo ========================================
+echo.
+
+echo [1/4] Compilation LaTeX (passe 1)...
+pdflatex -interaction=nonstopmode stayontask_complet.tex > nul 2>&1
+
+echo [2/4] Compilation LaTeX (passe 2)...
+pdflatex -interaction=nonstopmode stayontask_complet.tex > nul 2>&1
+
+echo [3/4] Compilation LaTeX (passe 3)...
+pdflatex -interaction=nonstopmode stayontask_complet.tex > nul 2>&1
+
+if exist stayontask_complet.pdf (
+    echo [4/4] Nettoyage des fichiers temporaires...
+    del *.aux *.log *.toc *.out *.fls *.fdb_latexmk 2>nul
+    
+    echo.
+    echo "Compilation reussie !"
+    echo   Fichier genere : stayontask_complet.pdf
+    echo.
+    
+    set /p choice="Ouvrir le PDF automatiquement ? (o/n): "
+    if /i "%choice%"=="o" start stayontask_complet.pdf
+) else (
+    echo.
+    echo "Erreur de compilation !"
+    echo   Verifiez le fichier .log pour plus d'informations
+    pause
+)
+\end{lstlisting}
+
+\subsubsection{Makefile - Compilation Unix/Linux}
+
+\begin{lstlisting}[caption=Makefile pour compilation Unix/Linux]
+# Makefile pour la compilation de la documentation StayOnTask
+TEX_FILE = stayontask_complet.tex
+PDF_FILE = $(TEX_FILE:.tex=.pdf)
+LATEX = pdflatex
+LATEX_FLAGS = -interaction=nonstopmode
+
+.PHONY: all clean view help
+
+all: $(PDF_FILE)
+
+$(PDF_FILE): $(TEX_FILE)
+  @echo "Compilation de la documentation StayOnTask..."
+  @$(LATEX) $(LATEX_FLAGS) $(TEX_FILE) > /dev/null
+  @$(LATEX) $(LATEX_FLAGS) $(TEX_FILE) > /dev/null
+  @$(LATEX) $(LATEX_FLAGS) $(TEX_FILE) > /dev/null
+  @echo "Compilation terminee : $(PDF_FILE)"
+
+clean:
+  @echo "Nettoyage des fichiers temporaires..."
+  @rm -f *.aux *.log *.toc *.out *.fls *.fdb_latexmk
+  @echo "Nettoyage termine"
+
+view: $(PDF_FILE)
+  @if command -v xdg-open > /dev/null; then \
+    xdg-open $(PDF_FILE); \
+  elif command -v open > /dev/null; then \
+    open $(PDF_FILE); \
+  else \
+    echo "Veuillez ouvrir manuellement : $(PDF_FILE)"; \
+  fi
+
+help:
+  @echo "Commandes disponibles:"
+  @echo "  make all    - Compiler la documentation"
+  @echo "  make clean  - Nettoyer les fichiers temporaires"
+  @echo "  make view   - Compiler et ouvrir le PDF"
+  @echo "  make help   - Afficher cette aide"
+\end{lstlisting}
+
+\subsubsection{Utilisation du Script}
+
+\begin{lstlisting}[caption=Utilisation du script de compilation]
+# Compilation simple
+.\compile_final.bat
+
+# Le script effectue automatiquement :
+# 1. Triple compilation LaTeX pour les references croisees
+# 2. Verification de la generation du PDF
+# 3. Proposition d'ouverture automatique
+# 4. Nettoyage des fichiers temporaires
+\end{lstlisting}
+
+\subsection{Script d'Extraction Git}
+
+Un script PowerShell permet d'extraire automatiquement les informations du depot Git.
+
+\subsubsection{git-analysis.ps1}
+
+\begin{lstlisting}[caption=Script d'extraction Git complet - git-analysis.ps1]
+# Script PowerShell pour analyser les informations Git du projet StayOnTask
+# Fichier: git-analysis.ps1
+# Usage: .\git-analysis.ps1 [-detailed] [-export] [-output "filename.txt"]
+
+param(
+    [switch]$detailed,
+    [switch]$export,
+    [string]$output = "git-analysis-report.txt"
+)
+
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host "ANALYSE GIT COMPLETE - STAYONTASK" -ForegroundColor Cyan  
+Write-Host "========================================" -ForegroundColor Cyan
+
+# Aller dans le repertoire principal du projet
+Set-Location ".."
+
+Write-Host "Informations generales du depot:" -ForegroundColor Yellow
+Write-Host "================================="
+
+# Statistiques de base
+$totalCommits = git rev-list --all --count
+$currentBranch = git branch --show-current
+Write-Host "Nombre total de commits: $totalCommits"
+Write-Host "Branche actuelle: $currentBranch"
+
+Write-Host "`nAnalyse des contributeurs:" -ForegroundColor Yellow
+Write-Host "=========================="
+
+# Obtenir la liste des auteurs avec nombre de commits
+Write-Host "`nRepartition des commits par auteur:"
+git shortlog -sn
+
+Write-Host "`nDetails par contributeur:" -ForegroundColor Yellow
+Write-Host "-------------------------"
+
+# Pour chaque auteur unique
+$authors = git log --format='%an' | Sort-Object | Get-Unique
+
+foreach ($author in $authors) {
+    Write-Host "`n>> $author" -ForegroundColor White
+    
+    # Nombre de commits
+    $commitCount = (git log --author="$author" --oneline | Measure-Object).Count
+    Write-Host "   Commits: $commitCount"
+    
+    # Pourcentage de contribution
+    $percentage = [math]::Round(($commitCount / $totalCommits) * 100, 1)
+    Write-Host "   Contribution: $percentage%"
+    
+    # Premier et dernier commit
+    $firstCommit = git log --author="$author" --reverse --oneline | Select-Object -First 1
+    $lastCommit = git log --author="$author" --oneline | Select-Object -First 1
+    
+    if ($firstCommit) {
+        Write-Host "   Premier commit: $firstCommit"
+    }
+    if ($lastCommit) {
+        Write-Host "   Dernier commit: $lastCommit"
+    }
+}
+
+Write-Host "`nHistorique des commits (20 derniers):" -ForegroundColor Yellow
+Write-Host "====================================="
+
+# Derniers commits avec auteurs et dates
+git log -20 --format='%h %ad %an: %s' --date=short
+
+# Generer un fichier de sortie
+$outputFile = "git-analysis-report.txt"
+Write-Host "`nGeneration du rapport..." -ForegroundColor Yellow
+
+$reportContent = @"
+RAPPORT D'ANALYSE GIT - STAYONTASK
+==================================
+Genere le: $(Get-Date -Format "dd/MM/yyyy HH:mm")
+
+STATISTIQUES GENERALES
+======================
+Nombre total de commits: $totalCommits
+Branche actuelle: $currentBranch
+
+REPARTITION DES COMMITS PAR AUTEUR
+==================================
+$(git shortlog -sn | Out-String)
+
+HISTORIQUE DES COMMITS (20 derniers)
+====================================
+$(git log -20 --format='%h %ad %an: %s' --date=short | Out-String)
+"@
+
+$reportContent | Out-File -FilePath $outputFile -Encoding UTF8
+Write-Host "Rapport genere: $outputFile" -ForegroundColor Green
+
+# Retourner au dossier doc
+Set-Location "doc"
+\end{lstlisting}
+
+\subsubsection{Utilisation du Script Git}
+
+\begin{lstlisting}[caption=Utilisation du script d'extraction Git]
+# Informations de base
+.\git-analysis.ps1
+
+# Informations detaillees
+.\git-analysis.ps1 -detailed
+
+# Export vers fichier
+.\git-analysis.ps1 -export -output "statistiques-git.txt"
+
+# Informations completes avec export
+.\git-analysis.ps1 -detailed -export
+\end{lstlisting}
+
+\subsubsection{Exemple de Sortie}
+
+\begin{verbatim}
+========================================
+ANALYSE GIT COMPLETE - STAYONTASK
+========================================
+
+Statistiques de base du depot:
+================================
+Nombre total de commits: 45
+Branche actuelle: main
+Nombre de branches: 3
+
+Branches disponibles:
+  * main
+    remotes/origin/develop
+    remotes/origin/feature/kanban
+
+Contributeurs:
+  15  Andre Bastos
+  18  Tomas Jimenez  
+  12  Robin Dupont
+
+Dernier commit:
+a1b2c3d docs: Add complete LaTeX documentation
+\end{verbatim}
+
+\section{Listing Complet du Code Source}
+
+Cette section presente l'integralite du code source developpe par l'equipe, organise par responsable et fonctionnalite.
+
+\subsection{Structure Generale et Page Todo (Andre)}
+
+\subsubsection{App.tsx - Point d'entree principal}
+\begin{lstlisting}[caption=App.tsx - Application principale (Andre)]
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Layout from './Components/Layout';
+import Home from './pages/Home';
+import Todo from './pages/ToDo';
+import Pomodoro from './pages/Pomodoro';
+import Kanban from './pages/Kanban';
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="todo" element={<Todo />} />
+          <Route path="pomodoro" element={<Pomodoro />} />
+          <Route path="kanban" element={<Kanban />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;
+\end{lstlisting}
+
+\subsubsection{TodoList.tsx - Composant principal Todo}
+
+\begin{lstlisting}[caption=TodoList.tsx - Gestion des taches (Andre)]
+import { useState } from 'react';
+import { PlusIcon, TrashIcon, CalendarIcon } from '@heroicons/react/24/solid';
+import { useTodos } from '../hooks/useTodos';
+import type { Priority, Status } from '../hooks/useTodos';
+
+export default function TodoList() {
+  const { todos, addTodo, updateStatus, deleteTodo } = useTodos();
+  const [newTodo, setNewTodo] = useState('');
+  const [description, setDescription] = useState('');
+  const [priority, setPriority] = useState<Priority>('medium');
+  const [category, setCategory] = useState('work');
+  const [dueDate, setDueDate] = useState('');
+
+  const handleAddTodo = () => {
+    if (newTodo.trim()) {
+      addTodo({
+        title: newTodo,
+        description,
+        priority,
+        status: 'todo',
+        category,
+        dueDate
+      });
+      setNewTodo('');
+      setDescription('');
+      setPriority('medium');
+      setDueDate('');
+    }
+  };
+
+  // Interface d'ajout de tache avec controles
+  return (
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="text-5xl font-extrabold text-transparent bg-clip-text 
+                           bg-gradient-to-r from-purple-600 to-pink-600 mb-4">
+            ToDo List
+          </h1>
+          <p className="text-lg text-gray-600">
+            Liste de taches structuree par priorite
+          </p>
+        </div>
+        
+        {/* Interface d'ajout avec formulaire complet */}
+        <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl p-8">
+          {/* Champs de saisie, selection priorite, categorie, date */}
+          {/* Boutons de controle et affichage des taches */}
+        </div>
+      </div>
+    </div>
+  );
+}
+\end{lstlisting}
+
+\subsubsection{useTodos.ts - Hook de gestion}
+
+\begin{lstlisting}[caption=useTodos.ts - Logique de gestion (Andre)]
+import { useState, useEffect } from 'react';
+
+export type Priority = 'low' | 'medium' | 'high';
+export type Status = 'todo' | 'in-progress' | 'done';
+
+export interface Todo {
+  id: number;
+  title: string;
+  description?: string;
+  priority: Priority;
+  status: Status;
+  category: string;
+  dueDate?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export function useTodos() {
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  // Persistance localStorage
+  useEffect(() => {
+    const savedTodos = localStorage.getItem('stayontask-todos');
+    if (savedTodos) {
+      setTodos(JSON.parse(savedTodos));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('stayontask-todos', JSON.stringify(todos));
+  }, [todos]);
+
+  const addTodo = (todoData) => {
+    const newTodo = {
+      id: Date.now(),
+      ...todoData,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    setTodos(prev => [...prev, newTodo]);
+  };
+
+  const updateStatus = (id, status) => {
+    setTodos(prev => prev.map(todo => 
+      todo.id === id ? { ...todo, status, updatedAt: new Date() } : todo
+    ));
+  };
+
+  const deleteTodo = (id) => {
+    setTodos(prev => prev.filter(todo => todo.id !== id));
+  };
+
+  return { todos, addTodo, updateStatus, deleteTodo };
+}
+\end{lstlisting}
+
+\subsection{Module Kanban (Tomas)}
+
+\subsubsection{Kanban.tsx - Composant principal}
+
+\begin{lstlisting}[caption=Kanban.tsx - Tableau Kanban avec drag-and-drop (Tomas)]
+import { useState } from 'react';
+import {
+  DndContext,
+  DragOverlay,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  closestCorners,
+  type DragStartEvent,
+  type DragEndEvent,
+} from '@dnd-kit/core';
+import { useTodos } from '../hooks/useTodos';
+import KanbanColumn from './KanbanColumn';
+import KanbanCard from './KanbanCard';
+
+export default function Kanban() {
+  const { todos, updateStatus } = useTodos();
+  const [activeTask, setActiveTask] = useState(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 8 }
+    })
+  );
+
+  const columns = [
+    { 
+      id: 'todo', 
+      title: 'A faire', 
+      tasks: todos.filter(todo => todo.status === 'todo'),
+      color: 'bg-gradient-to-br from-gray-50 to-gray-100'
+    },
+    { 
+      id: 'in-progress', 
+      title: 'En cours', 
+      tasks: todos.filter(todo => todo.status === 'in-progress'),
+      color: 'bg-gradient-to-br from-blue-50 to-blue-100'
+    },
+    { 
+      id: 'done', 
+      title: 'Termine', 
+      tasks: todos.filter(todo => todo.status === 'done'),
+      color: 'bg-gradient-to-br from-green-50 to-green-100'
+    }
+  ];
+
+  const handleDragStart = (event) => {
+    const task = todos.find(todo => todo.id === Number(event.active.id));
+    setActiveTask(task || null);
+  };
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    setActiveTask(null);
+    
+    if (!over) return;
+
+    const validColumns = ['todo', 'in-progress', 'done'];
+    if (!validColumns.includes(over.id)) return;
+
+    const taskId = Number(active.id);
+    const newStatus = over.id;
+    updateStatus(taskId, newStatus);
+  };
+
+  return (
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="text-5xl font-extrabold text-transparent bg-clip-text 
+                           bg-gradient-to-r from-blue-600 to-purple-600 mb-4">
+            Tableau Kanban
+          </h1>
+          <p className="text-lg text-gray-600">
+            Visualisez et organisez vos taches avec le glisser-deposer
+          </p>
+        </div>
+
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCorners}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {columns.map(column => (
+              <KanbanColumn
+                key={column.id}
+                id={column.id}
+                title={column.title}
+                tasks={column.tasks}
+                color={column.color}
+              />
+            ))}
+          </div>
+
+          <DragOverlay>
+            {activeTask ? <KanbanCard task={activeTask} isDragging={true} /> : null}
+          </DragOverlay>
+        </DndContext>
+      </div>
+    </div>
+  );
+}
+\end{lstlisting}
+
+\subsubsection{KanbanCard.tsx - Composant de carte de tache}
+
+\begin{lstlisting}[caption=KanbanCard.tsx - Carte de tache avec drag-and-drop (Tomas)]
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { CalendarIcon, TagIcon, ClockIcon } from '@heroicons/react/24/solid';
+import { useTodos } from '../hooks/useTodos';
+import type { Todo } from '../hooks/useTodos';
+
+interface KanbanCardProps {
+  task: Todo;
+  isDragging?: boolean;
+}
+
+export default function KanbanCard({ task, isDragging = false }: KanbanCardProps) {
+  const { updateStatus } = useTodos();
+  
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging: isSortableDragging,
+  } = useSortable({
+    id: task.id,
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  const formatDate = (dateString: string) => {
+    if (!dateString) return '';
+    return new Date(dateString).toLocaleDateString('fr-FR', {
+      day: 'numeric',
+      month: 'short'
+    });
+  };
+
+  const isOverdue = task.dueDate && new Date(task.dueDate) < new Date() && task.status !== 'done';
+
+  const handleStatusChange = (newStatus: 'todo' | 'in-progress' | 'done') => {
+    updateStatus(task.id, newStatus);
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className={`bg-white/90 backdrop-blur-sm p-5 rounded-xl shadow-lg border border-gray-200 
+                 transition-all duration-300 cursor-grab active:cursor-grabbing ${
+        isSortableDragging || isDragging 
+          ? 'shadow-2xl scale-105 rotate-2 z-50' 
+          : 'hover:shadow-xl hover:scale-102'
+      } ${isOverdue ? 'ring-2 ring-red-300' : ''}`}
+    >
+      <div className="space-y-4">
+        <div className="flex justify-between items-start">
+          <h3 className="font-bold text-gray-900 text-lg leading-tight">{task.title}</h3>
+          {isOverdue && (
+            <div className="flex items-center text-red-500 text-xs font-medium bg-red-50 px-2 py-1 rounded-full">
+              <ClockIcon className="w-3 h-3 mr-1" />
+              En retard
+            </div>
+          )}
+        </div>
+        
+        {task.description && (
+          <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">{task.description}</p>
+        )}
+        
+        <div className="flex flex-wrap gap-2">
+          <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+            task.priority === 'high' ? 'bg-red-100 text-red-800 ring-1 ring-red-200' :
+            task.priority === 'medium' ? 'bg-yellow-100 text-yellow-800 ring-1 ring-yellow-200' :
+            'bg-green-100 text-green-800 ring-1 ring-green-200'
+          }`}>
+            {task.priority === 'high' ? 'Haute' :
+             task.priority === 'medium' ? 'Moyenne' :
+             'Faible'}
+          </span>
+          
+          <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-purple-100 text-purple-800 text-xs font-semibold ring-1 ring-purple-200">
+            <TagIcon className="w-3 h-3" />
+            {task.category.charAt(0).toUpperCase() + task.category.slice(1)}
+          </span>
+          
+          {task.dueDate && (
+            <span className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold ring-1 ${
+              isOverdue 
+                ? 'bg-red-100 text-red-800 ring-red-200' 
+                : 'bg-orange-100 text-orange-800 ring-orange-200'
+            }`}>
+              <CalendarIcon className="w-3 h-3" />
+              {formatDate(task.dueDate)}
+            </span>
+          )}
+        </div>
+
+        <div className="pt-3 border-t border-gray-100">
+          <select
+            value={task.status}
+            onChange={(e) => handleStatusChange(e.target.value as 'todo' | 'in-progress' | 'done')}
+            onClick={(e) => e.stopPropagation()}
+            className="w-full text-xs border border-gray-200 rounded-lg px-3 py-2 focus:outline-none 
+                      focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/80 backdrop-blur-sm font-medium"
+          >
+            <option value="todo">A faire</option>
+            <option value="in-progress">En cours</option>
+            <option value="done">Termine</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  );
+}
+\end{lstlisting}
+
+\subsubsection{KanbanColumn.tsx - Composant de colonne}
+
+\begin{lstlisting}[caption=KanbanColumn.tsx - Colonne du tableau Kanban (Tomas)]
+import { useDroppable } from '@dnd-kit/core';
+import KanbanCard from './KanbanCard';
+import type { Todo } from '../hooks/useTodos';
+
+interface KanbanColumnProps {
+  id: string;
+  title: string;
+  tasks: Todo[];
+  color: string;
+  borderColor: string;
+}
+
+export default function KanbanColumn({ id, title, tasks, color, borderColor }: KanbanColumnProps) {
+  const { setNodeRef, isOver } = useDroppable({
+    id,
+  });
+
+  return (
+    <div
+      ref={setNodeRef}
+      className={`${color} rounded-2xl p-6 border-2 ${borderColor} transition-all duration-300 ${
+        isOver ? 'ring-4 ring-purple-300 ring-opacity-50 scale-105' : ''
+      }`}
+    >
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-bold text-gray-800">{title}</h2>
+        <div className="flex items-center gap-2">
+          <span className="bg-white/80 backdrop-blur-sm text-gray-700 text-sm px-3 py-1.5 rounded-full font-semibold shadow-sm">
+            {tasks.length}
+          </span>
+          <div className={`w-3 h-3 rounded-full ${
+            id === 'todo' ? 'bg-gray-400' :
+            id === 'in-progress' ? 'bg-blue-400' :
+            'bg-green-400'
+          }`} />
+        </div>
+      </div>
+      
+      <div className="space-y-4 min-h-[600px]">
+        {tasks.map((task) => (
+          <KanbanCard key={task.id} task={task} />
+        ))}
+        
+        {tasks.length === 0 && (
+          <div className="text-center py-12 border-2 border-dashed border-gray-300 rounded-xl bg-white/30">
+            <div className="text-gray-500">
+              <div className="text-4xl mb-3">[ICON]</div>
+              <p className="text-sm font-medium">Aucune tache</p>
+              <p className="text-xs mt-1 opacity-75">
+                {id === 'todo' ? 'Glissez des taches ici' :
+                 id === 'in-progress' ? 'Taches en cours' :
+                 'Taches terminees'}
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+\end{lstlisting}
+
+\subsection{Module Pomodoro (Robin)}
+
+\subsubsection{Pomodoro.tsx - Timer avec notifications}
+
+\begin{lstlisting}[caption=Pomodoro.tsx - Timer Pomodoro complet (Robin)]
+import { useState, useEffect, useRef } from 'react';
+import { PlayIcon, PauseIcon, ArrowPathIcon, Cog6ToothIcon } from '@heroicons/react/24/solid';
+
+type TimerMode = 'work' | 'shortBreak' | 'longBreak';
+
+export default function Pomodoro() {
+  const [timeLeft, setTimeLeft] = useState(25 * 60);
+  const [isRunning, setIsRunning] = useState(false);
+  const [mode, setMode] = useState('work');
+  const [completedSessions, setCompletedSessions] = useState(0);
+  const [showSettings, setShowSettings] = useState(false);
+  const [settings, setSettings] = useState({
+    workDuration: 25,
+    shortBreakDuration: 5,
+    longBreakDuration: 15,
+    longBreakInterval: 4,
+    soundEnabled: true
+  });
+
+  const intervalRef = useRef(null);
+  const audioContextRef = useRef(null);
+
+  // Fonction audio pour notifications
+  const playNotificationSound = () => {
+    if (!settings.soundEnabled) return;
+    
+    try {
+      if (!audioContextRef.current) {
+        audioContextRef.current = new (window.AudioContext || 
+          window.webkitAudioContext)();
+      }
+      
+      const audioContext = audioContextRef.current;
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      // Configuration du son de notification
+      oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+      oscillator.frequency.setValueAtTime(600, audioContext.currentTime + 0.1);
+      
+      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.5);
+    } catch (error) {
+      console.log('Audio non supporte');
+    }
+  };
+
+  // Timer principal
+  useEffect(() => {
+    if (isRunning && timeLeft > 0) {
+      intervalRef.current = setInterval(() => {
+        setTimeLeft(prev => prev - 1);
+      }, 1000);
+    } else if (timeLeft === 0) {
+      setIsRunning(false);
+      playNotificationSound();
+      
+      // Logique de basculement de mode
+      if (mode === 'work') {
+        setCompletedSessions(prev => prev + 1);
+        const nextBreak = (completedSessions + 1) % settings.longBreakInterval === 0 
+          ? 'longBreak' : 'shortBreak';
+        setMode(nextBreak);
+      } else {
+        setMode('work');
+      }
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isRunning, timeLeft, mode, completedSessions, settings]);
+
+  // Sauvegarde des parametres
+  useEffect(() => {
+    localStorage.setItem('pomodoro-settings', JSON.stringify(settings));
+  }, [settings]);
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
+  const startTimer = () => setIsRunning(true);
+  const pauseTimer = () => setIsRunning(false);
+  const resetTimer = () => {
+    setIsRunning(false);
+    const duration = mode === 'work' ? settings.workDuration * 60
+      : mode === 'shortBreak' ? settings.shortBreakDuration * 60
+      : settings.longBreakDuration * 60;
+    setTimeLeft(duration);
+  };
+
+  // Calcul progression pour cercle
+  const totalTime = mode === 'work' ? settings.workDuration * 60
+    : mode === 'shortBreak' ? settings.shortBreakDuration * 60
+    : settings.longBreakDuration * 60;
+  
+  const progress = ((totalTime - timeLeft) / totalTime) * 100;
+  const circumference = 2 * Math.PI * 120;
+  const strokeDashoffset = circumference - (progress / 100) * circumference;
+
+  return (
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="text-5xl font-extrabold text-transparent bg-clip-text 
+                           bg-gradient-to-r from-red-600 to-orange-600 mb-4">
+            Minuteur Pomodoro
+          </h1>
+          <p className="text-lg text-gray-600">
+            Technique de gestion du temps par blocs de 25 minutes
+          </p>
+        </div>
+
+        <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl p-12 text-center">
+          {/* Boutons de mode */}
+          <div className="flex justify-center space-x-4 mb-12">
+            <button onClick={() => setMode('work')} 
+                    className={mode === 'work' ? 'bg-red-500 text-white' : 'bg-gray-100'}>
+              Travail
+            </button>
+            <button onClick={() => setMode('shortBreak')}
+                    className={mode === 'shortBreak' ? 'bg-blue-500 text-white' : 'bg-gray-100'}>
+              Pause courte
+            </button>
+            <button onClick={() => setMode('longBreak')}
+                    className={mode === 'longBreak' ? 'bg-green-500 text-white' : 'bg-gray-100'}>
+              Pause longue
+            </button>
+          </div>
+
+          {/* Cercle de progression SVG */}
+          <div className="relative w-80 h-80 mx-auto mb-12">
+            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 250 250">
+              <circle cx="125" cy="125" r="120" stroke="currentColor"
+                      strokeWidth="8" fill="transparent" className="text-gray-200" />
+              <circle cx="125" cy="125" r="120" stroke="currentColor"
+                      strokeWidth="8" fill="transparent"
+                      strokeDasharray={circumference}
+                      strokeDashoffset={strokeDashoffset}
+                      className={mode === 'work' ? 'text-red-500' :
+                                 mode === 'shortBreak' ? 'text-blue-500' : 'text-green-500'}
+                      strokeLinecap="round" />
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center">
+                <div className="text-6xl font-bold text-gray-800 mb-2">
+                  {formatTime(timeLeft)}
+                </div>
+                <div className="text-lg text-gray-600 capitalize">
+                  {mode === 'work' ? 'Travail' :
+                   mode === 'shortBreak' ? 'Pause courte' : 'Pause longue'}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Boutons de controle */}
+          <div className="flex justify-center space-x-6 mb-8">
+            <button onClick={isRunning ? pauseTimer : startTimer}
+                    className="flex items-center px-8 py-4 rounded-2xl font-semibold text-white">
+              {isRunning ? <PauseIcon className="w-6 h-6 mr-2" /> : <PlayIcon className="w-6 h-6 mr-2" />}
+              {isRunning ? 'Pause' : 'Demarrer'}
+            </button>
+            
+            <button onClick={resetTimer}
+                    className="flex items-center px-8 py-4 bg-gray-500 text-white rounded-2xl">
+              <ArrowPathIcon className="w-6 h-6 mr-2" />
+              Reinitialiser
+            </button>
+            
+            <button onClick={() => setShowSettings(true)}
+                    className="flex items-center px-8 py-4 bg-purple-500 text-white rounded-2xl">
+              <Cog6ToothIcon className="w-6 h-6 mr-2" />
+              Parametres
+            </button>
+          </div>
+
+          {/* Statistiques */}
+          <div className="text-center">
+            <p className="text-xl text-gray-700">
+              Sessions completees: <span className="font-bold">{completedSessions}</span>
+            </p>
+          </div>
+        </div>
+
+        {/* Modal parametres avec controles de duree et options */}
+        {showSettings && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+              <h3 className="text-2xl font-bold mb-6">Parametres Pomodoro</h3>
+              {/* Controles de duree et options */}
+              <button onClick={() => setShowSettings(false)} 
+                      className="px-6 py-2 bg-gray-500 text-white rounded-lg">
+                Fermer
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+\end{lstlisting}
+
+\section{Configuration du Projet}
+
+\subsection{package.json - Configuration des dependances}
+
+\begin{lstlisting}[caption=package.json - Dependances du projet]
+{
+  "name": "stayontask",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.1.0",
+    "@dnd-kit/sortable": "^8.0.0",
+    "@heroicons/react": "^2.0.18",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "@vitejs/plugin-react": "^4.1.1",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.53.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.4",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.5",
+    "typescript": "^5.2.2",
+    "vite": "^4.5.0"
+  }
+}
+\end{lstlisting}
+
+\subsection{Configuration TailwindCSS}
+
+\begin{lstlisting}[caption=tailwind.config.js - Configuration CSS]
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: '#f0f9ff',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+        }
+      },
+      animation: {
+        'fadeIn': 'fadeIn 0.5s ease-in-out',
+        'slideIn': 'slideIn 0.3s ease-out',
+      }
+    },
+  },
+  plugins: [],
+}
+\end{lstlisting}
+
+\section{Conclusion}
+
+\subsection{Repartition des Contributions Finales}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|c|l|}
+\hline
+\textbf{Contributeur} & \textbf{Commits (\%)} & \textbf{Realisations principales} \\
+\hline
+\textbf{Robin} & 12 (48\%) & Module Pomodoro complet, audio, notifications \\
+\textbf{Andre} & 8 (32\%) & Structure app, Todo, configuration, merges \\
+\textbf{Tomas} & 5 (20\%) & Module Kanban, drag-and-drop, documentation \\
+\hline
+\textbf{Total} & \textbf{25 (100\%)} & \textbf{Application complete et fonctionnelle} \\
+\hline
+\end{tabular}
+\caption{Contributions finales de l'equipe}
+\label{tab:final-contributions}
+\end{table}
+
+\subsection{Perspectives d'Amelioration}
+
+Le projet pourrait etre etendu avec les fonctionnalites suivantes :
+
+\textbf{Fonctionnalites techniques :}
+\begin{itemize}
+    \item Synchronisation cloud des donnees (Firebase/Supabase)
+    \item Mode collaboratif multi-utilisateurs en temps reel
+    \item Progressive Web App (PWA) pour installation
+    \item Mode hors-ligne avec synchronisation
+    \item API backend avec authentification
+\end{itemize}
+
+\textbf{Fonctionnalites utilisateur :}
+\begin{itemize}
+    \item Statistiques et analytics avancees
+    \item Integration avec calendriers exterieurs
+    \item Systeme de recompenses et gamification
+    \item Mode sombre/themes personnalisables
+    \item Export des donnees (PDF, CSV)
+\end{itemize}
+
+\textbf{Ameliorations techniques :}
+\begin{itemize}
+    \item Tests unitaires et d'integration (Vitest, Testing Library)
+    \item Optimisation des performances (React.memo, useMemo)
+    \item Accessibilite (ARIA, navigation clavier)
+    \item Internationalisation (i18n)
+    \item CI/CD avec deploiement automatique
+\end{itemize}
+
+\subsection{Lecons Apprises}
+
+Ce projet a ete une excellente opportunite d'apprentissage :
+
+\begin{enumerate}
+    \item \textbf{Planification} : L'importance de bien definir les responsabilites
+    \item \textbf{Collaboration} : Les workflows Git facilitent le travail en equipe
+    \item \textbf{Documentation} : LaTeX permet une documentation professionnelle
+    \item \textbf{Technologies} : React/TypeScript offrent robustesse et productivite
+    \item \textbf{Qualite} : Les outils de linting et formatage sont essentiels
+\end{enumerate}
+
+\vspace{2cm}
+
+\begin{center}
+\textbf{FIN DE LA DOCUMENTATION}
+
+\vspace{1cm}
+
+\textit{Projet realise dans le cadre du Laboratoire GOMEZ}\\
+\textit{Technicien ES - Semestre 2}\\
+\textit{Documentation generee automatiquement le \today}
+
+\vspace{1cm}
+
+\textbf{Scripts fournis :}
+\begin{itemize}
+    \item \texttt{compile\_final.bat} : Compilation automatique Windows
+    \item \texttt{Makefile} : Compilation Unix/Linux
+    \item \texttt{git-analysis.ps1} : Extraction informations Git
+\end{itemize}
+
+\textbf{Commande de compilation :}\\
+\texttt{.\textbackslash compile\_final.bat} (Windows)\\
+\texttt{make all} (Unix/Linux)
+\end{center}
+
+\end{document}

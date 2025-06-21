@@ -1,2 +1,12 @@
 /stayontask/node_modules/
 /v0.1
+
+# Documentation LaTeX - Exclude PDF outputs
+*.pdf
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fdb_latexmk
+*.fls
