@@ -21,18 +21,6 @@
 
 ---
 
-## 🌟 **POINTS FORTS**
-
-- **Interface moderne et intuitive** avec animations fluides et design glassmorphism
-- **Trois outils de productivité intégrés** : TodoList, Kanban et Pomodoro Timer
-- **Glisser-déposer avancé** pour une organisation visuelle des tâches
-- **Persistance automatique** des données avec localStorage
-- **Design responsive** adapté à tous les écrans
-- **Timer Pomodoro personnalisable** avec notifications sonores
-- **Développé en TypeScript** pour une meilleure robustesse du code
-
----
-
 ## ℹ️ **APERÇU**
 
 **StayOnTask** est une application web moderne de productivité personnelle qui combine trois outils essentiels dans une interface élégante. Conçue pour les étudiants, professionnels et toute personne souhaitant optimiser sa gestion du temps, elle offre une expérience utilisateur fluide et motivante.
@@ -148,15 +136,5 @@ stayontask/
 2. Configurez les durées dans les paramètres si désiré
 3. Cliquez sur "Démarrer" pour commencer une session
 4. Respectez les pauses entre les sessions de travail
-
----
-
-## **PERSONNALISATION**
-
-Le projet utilise TailwindCSS pour un styling flexible. Vous pouvez facilement personnaliser :
-- Les couleurs et thèmes dans `tailwind.config.js`
-- Les durées d'animation
-- Les composants visuels
-- Les gradients et effets
 
 ---
